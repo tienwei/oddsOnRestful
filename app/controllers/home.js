@@ -12,11 +12,11 @@ router.get('/users', function (req, res, next) {
     //   articles: articles
     // });
     var users = new Users();
-    res.json({
-    	test: users.users,
-      name: req.param('name'),
-      max: req.param('max')
+    users.then(function(ss){
+      console.log(ss);
+      res.json(ss);
     });
+    
 });
 
 

@@ -1,16 +1,12 @@
-// Example model
+var Firebase = require('firebase');
 
 
 function Users (opts) {
-  this.users = [
-  	{
-  		name: 'user 1',
-  		age: '12'
-  	}, {
-  		name: 'user 2',
-  		age: '76'
-  	}
-  ];
+  var myFirebaseRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
+  myFirebaseRef.on('value' ,function(snapshot) {
+  	console.log(JSON.stringify(snapshot.val()));
+	  this.users = JSON.stringify(snapshot.val()); 
+	});
 }
 
 module.exports = Users;
