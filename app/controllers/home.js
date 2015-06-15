@@ -12,7 +12,10 @@ module.exports = function (app) {
 router.get('/users', function (req, res, next) {
     var options = {
       keys: ['name']   // keys to search in
-    }
+    };
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');  
     var keyword = req.param('name'); 
     var myFirebaseRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
     myFirebaseRef.on('value' ,function(snapshot) {
