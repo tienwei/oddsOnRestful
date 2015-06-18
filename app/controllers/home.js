@@ -21,7 +21,9 @@ usersRef.on('value', function(usersObject) {
 
 router.get('/users', function(req, res, next) {
   var options = {
-    keys: ['name']   // keys to search in
+    keys: ['name'],
+    shouldSort: true,
+    threshold: 0.4
   };
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
