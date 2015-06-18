@@ -9,9 +9,8 @@ module.exports = function (app) {
   app.use(require('express-promise')());
 };
 
-// global variable
 var users = [],
-usersRef = new Firebase("https://oddson.firebaseio.com/users");
+usersRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
 usersRef.on('value', function(usersObject) {
   users = Object.keys(usersObject.val())
     .map(function(userObj) {
