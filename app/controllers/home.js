@@ -11,7 +11,7 @@ module.exports = function (app) {
 
 var users = [],
 usersRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
-usersRef.on('value', function(usersObject) {
+usersRef.once('value', function(usersObject) {
   users = Object.keys(usersObject.val())
     .map(function(userObj) {
       return usersObject.val()[userObj];
