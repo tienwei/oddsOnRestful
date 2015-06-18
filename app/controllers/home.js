@@ -15,16 +15,14 @@ router.get('/users', function (req, res, next) {
     };
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');  
-    var keyword = req.param('name'); 
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    var keyword = req.param('name');
     var myFirebaseRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
-    myFirebaseRef.on('value' ,function(snapshot) {
-      var users = Object.keys(snapshot.val()).map(function(k) { return snapshot.val()[k] });
+    myFirebaseRef.once('value' ,function(snapshot) {
+      var users = Object.keys(snapshot.val()).map(function(k) { return snapshot.val()[k]; });
       var f = new Fuse(users, options);
       var result = f.search(keyword);
       res.json(result);
     });
-    
+
 });
-
-
