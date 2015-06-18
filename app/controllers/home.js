@@ -9,22 +9,25 @@ module.exports = function (app) {
   app.use(require('express-promise')());
 };
 
-router.get('/users', function (req, res, next) {
-    var options = {
-      keys: ['name']   // keys to search in
-    };
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');  
-    var keyword = req.param('name'); 
-    var myFirebaseRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
-    myFirebaseRef.on('value' ,function(snapshot) {
-      var users = Object.keys(snapshot.val()).map(function(k) { return snapshot.val()[k] });
-      var f = new Fuse(users, options);
-      var result = f.search(keyword);
-      res.json(result);
+// global variable
+var users,
+usersRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
+usersRef.on('value' , function(usersObject) {
+  users = Object.keys(usersObject.val())
+    .map(function(userObj) {
+      return usersObject.val()[userObj];
     });
-    
 });
 
-
+router.get('/users', function(req, res, next) {
+  var options = {
+    keys: ['name']   // keys to search in
+  };
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  var keyword = req.param('name');
+  var f       = new Fuse(users, options);
+  var result  = f.search(keyword);
+  res.json(result);
+});
