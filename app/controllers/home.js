@@ -23,11 +23,11 @@ usersRef.once('value', function(usersObject) {
 });
 
 // when a new user is created, add them to the user array
-usersRef.limitToLast(1).on('child_added', function(newUser) {
+usersRef.on('child_added', function(newUser) {
   console.log('child_added worked');
   if(!initilCall) {
     console.log('pushed newUser');
-    users.push(newUser);
+    users.push(newUser.val());
   }
   initilCall = false;
 });
