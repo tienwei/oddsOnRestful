@@ -11,25 +11,12 @@ module.exports = function (app) {
 
 // variables
 var users = [],
-initilCall = true;
-usersRef = new Firebase('https://torid-heat-6127.firebaseio.com/users');
-
-// initially load all the users
-usersRef.once('value', function(usersObject) {
-  users = Object.keys(usersObject.val())
-    .map(function(userObj) {
-      return usersObject.val()[userObj];
-    });
-});
+usersRef  = new Firebase('https://torid-heat-6127.firebaseio.com/users');
 
 // when a new user is created, add them to the user array
-usersRef.on('child_added', function(newUser) {
-  console.log('child_added worked');
-  if(!initilCall) {
-    console.log('pushed newUser');
-    users.push(newUser.val());
-  }
-  initilCall = false;
+usersRef.on('child_added', function(user) {
+  console.log('pushed newUser');
+  users.push(user.val());
 });
 
 router.get('/users', function(req, res, next) {
