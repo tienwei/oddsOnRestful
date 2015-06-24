@@ -1,21 +1,35 @@
 var express = require('express'),
-  router = express.Router(),
-  Users = require('../models/user.js'),
-  Fuse = require('../../public/js/fuse.min.js'),
-  Firebase = require('firebase');
+  router    = express.Router(),
+  Users     = require('../models/user.js'),
+  Fuse      = require('../../public/js/fuse.min.js'),
+  Firebase  = require('firebase');
 
 module.exports = function (app) {
   app.use('/', router);
   app.use(require('express-promise')());
 };
 
+// variables
 var users = [],
-usersRef = new Firebase("https://torid-heat-6127.firebaseio.com/users");
-usersRef.on('value', function(usersObject) {
+initilCall = true;
+usersRef = new Firebase('https://torid-heat-6127.firebaseio.com/users');
+
+// initially load all the users
+usersRef.once('value', function(usersObject) {
   users = Object.keys(usersObject.val())
     .map(function(userObj) {
       return usersObject.val()[userObj];
     });
+});
+
+// when a new user is created, add them to the user array
+usersRef.limitToLast(1).on('child_added', function(newUser) {
+  console.log('child_added worked');
+  if(!initilCall) {
+    console.log('pushed newUser');
+    users.push(newUser);
+  }
+  initilCall = false;
 });
 
 router.get('/users', function(req, res, next) {
